@@ -114,7 +114,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<md-grid-list md-cols-sm=\"2\" md-cols-md=\"2\" md-cols-gt-md=\"6\" md-row-height-gt-md=\"1:1\" md-row-height=\"2:2\" md-gutter=\"12px\" md-gutter-gt-sm=\"8px\"><md-grid-tile ng-repeat=\"action in actions\" ng-class=\"{'md-whiteframe-z4':active == $index}\">{{action.text}}</md-grid-tile></md-grid-list><md-slider flex=\"flex\" min=\"500\" max=\"2000\" ng-model=\"speed\" id=\"red-slider\"></md-slider>");;return buf.join("");
+	buf.push("<md-grid-list md-cols-sm=\"2\" md-cols-md=\"2\" md-cols-gt-md=\"6\" md-row-height-gt-md=\"1:1\" md-row-height=\"2:2\" md-gutter=\"12px\" md-gutter-gt-sm=\"8px\"><md-grid-tile ng-repeat=\"action in actions\" ng-class=\"{'md-whiteframe-z4':active == $index}\">{{action.text}}</md-grid-tile></md-grid-list><md-slider flex=\"flex\" min=\"500\" max=\"2000\" ng-model=\"speed\" id=\"red-slider\"></md-slider><md-switch ng-model=\"isXY\" aria-label=\"Switch 1\">Switch 1: {{ isContinue }}</md-switch>");;return buf.join("");
 	}
 
 /***/ },
@@ -421,12 +421,30 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var async = __webpack_require__(8), actions = __webpack_require__(11);
-	module.exports = ['$scope', '$timeout', function($scope, $timeout) {
+	module.exports = ['$scope', '$timeout', '$mdMedia', function($scope, $timeout, $mdMedia) {
+
+
 	  var active = true,
 	    fix = function() {},
 	    normal,
-	    keyAction = function() {
-	      fix();
+	    keyAction = function(e) {
+	      switch (e.which) {
+	        case 119:
+	          fix('up');
+	          break;
+	        case 97:
+	          fix('left');
+	          break;
+	        case 100:
+	          fix('rigth');
+	          break;
+	        case 115:
+	          fix('down');
+	          break;
+	        default:
+	          fix(null);
+	          break;
+	      }
 	    };
 
 
@@ -450,17 +468,94 @@
 	    },
 	    function(next) {
 	      normal = $timeout(function() {
-	        if ((myActions.length - 1) === $scope.active) $scope.active = -1;
-	        $scope.active++;
-	        next();
-	        vars.active = true;
+
+
+
+	        switch ($scope.isXY) {
+	          case true:
+	            next();
+	            break;
+
+	          default:
+
+
+	            if ((myActions.length - 1) === $scope.active) $scope.active = -1;
+	            $scope.active++;
+	            next();
+	            vars.active = true;
+
+
+	            break;
+
+	        }
+
+
 	      }, $scope.speed);
-	      fix = function() {
+	      fix = function(mode) {
 	        vars.active = false;
 	        $timeout.cancel(normal);
 	        $timeout(function() {
-	          live.emit('message', angular.copy(myActions[$scope.active]));
-	          $scope.active = 0;
+
+
+	          if (!$scope.isXY) {
+	            live.emit('message', angular.copy(myActions[$scope.active]));
+	            $scope.active = 0;
+	          }
+	          else {
+
+
+	            var is = {
+	              sm: $mdMedia('sm'),
+	              md: $mdMedia('md'),
+	              'gt-md': $mdMedia('gt-md')
+	            };
+	            var line;
+	            if (is.sm || is.md) line = 2;
+	            else if (is['gt-md']) line = 6;
+	            switch (mode) {
+	              case 'up':
+	                $scope.active = $scope.active - line;
+	                break;
+	              case 'down':
+	                $scope.active = $scope.active + line;
+	                break;
+	              case 'rigth':
+	                $scope.active++;
+	                break;
+	              case 'left':
+	                $scope.active--;
+	                break;
+	              default:
+	                live.emit('message', angular.copy(myActions[$scope.active]));
+	                break;
+	            }
+	            var index = $scope.active + 1;
+
+
+	            if (index >= (myActions.length + line)) {
+	              $scope.active = 0;
+	            }
+
+	            else if (index > myActions.length) {
+	              $scope.active = index - myActions.length;
+	            }
+
+	            else if (index <= 0) {
+	              var base = Math.abs(myActions.length / line) * line;
+
+	              $scope.active = base - 2 + index;
+	              if ($scope.active < 1) $scope.active = base;
+
+	            }
+
+
+	            console.log('debug', index, $scope.active, myActions.length);
+	            //if ($scope.active)
+
+
+	          }
+
+	          //$scope.active = 0;
 	          next();
 	        });
 
