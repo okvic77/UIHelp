@@ -1,0 +1,49 @@
+doctype html
+html(lang="en", ng-app="Interface")
+  head
+    
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+
+    - var title = 'Interface';
+    title=title
+
+    base(href="/")
+      
+    link(rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css")
+    link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic")
+    link(rel="stylesheet", type="text/css", href="/app.css")
+      
+    script(type="application/javascript", src="/bower_components/moment/min/moment-with-locales.min.js")
+    script(src="/socket.io/socket.io.js")
+      
+    script(type="application/javascript", src="/bower_components/angular/angular.min.js")
+    script(type="application/javascript", src="/bower_components/angular-animate/angular-animate.min.js")
+    script(type="application/javascript", src="/bower_components/angular-aria/angular-aria.min.js")
+    script(type="application/javascript", src="/bower_components/angular-material/angular-material.min.js")
+    script(type="application/javascript", src="/bower_components/angular-ui-router/release/angular-ui-router.min.js")
+    script(type="application/javascript", src="/bower_components/angular-moment/angular-moment.min.js")
+
+    script(type="application/javascript", src="/bower_components/jquery/dist/jquery.min.js")
+    script(type="application/javascript", src="/bower_components/underscore/underscore-min.js")
+    script(type="application/javascript", src="/bower_components/backbone/backbone-min.js")
+
+
+    
+    script var live = io(), messages_ = !{JSON.stringify(messages)};
+    script(src="/app.js")
+       
+  body(layout='column', ng-controller='AppCtrl')
+    md-toolbar(layout='row')
+      .md-toolbar-tools
+        md-button.md-icon-button(ng-click="toggleSidenav('left')", hide-gt-sm='')
+          md-icon(aria-label='Menu', md-svg-icon='/menu.svg')
+        h1=title
+    div(layout='row', flex='')
+      md-sidenav.md-sidenav-left.md-whiteframe-z2(layout='column', md-component-id='left', md-is-locked-open="$mdMedia('gt-sm')")
+        md-button(ui-sref="inicio") Pantalla
+        md-button(ui-sref="simulador") Simulador
+        md-button(ui-sref="acerca") Acerca
+      #content(layout='column', flex='')
+        md-content.md-padding(layout='column', flex='', ui-view="")

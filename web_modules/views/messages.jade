@@ -1,0 +1,9 @@
+md-content
+  md-list
+    //- md-subheader.md-no-sticky 3 line item
+    md-list-item.md-3-line(ng-repeat='message in messages')
+      //- img.md-avatar(ng-src='{{item.face}}?{{$index}}', alt='{{item.who}}')
+      .md-list-item-text
+        h3 {{message.text}}
+        h4(am-time-ago="message.fecha")
+        //- p {{ message }}

@@ -1,0 +1,4 @@
+{
+  "verbose": true,
+  "ignore": ["node_modules", ".git", "workspace", "web_modules", "public", "bower_components"]
+}
