@@ -114,7 +114,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<md-grid-list md-cols-sm=\"2\" md-cols-md=\"2\" md-cols-gt-md=\"6\" md-row-height-gt-md=\"1:1\" md-row-height=\"2:2\" md-gutter=\"12px\" md-gutter-gt-sm=\"8px\"><md-grid-tile ng-repeat=\"action in actions\" ng-class=\"{'md-whiteframe-z4':active == $index}\">{{action.text}}</md-grid-tile></md-grid-list><md-slider flex=\"flex\" min=\"500\" max=\"2000\" ng-model=\"speed\" id=\"red-slider\"></md-slider><md-switch ng-model=\"isXY\" aria-label=\"Switch 1\">Switch 1: {{ isContinue }}</md-switch>");;return buf.join("");
+	buf.push("<md-grid-list md-cols-sm=\"2\" md-cols-md=\"2\" md-cols-gt-md=\"6\" md-row-height-gt-md=\"1:1\" md-row-height=\"2:2\" md-gutter=\"12px\" md-gutter-gt-sm=\"8px\"><md-grid-tile ng-repeat=\"action in actions\" ng-class=\"{'md-whiteframe-z4':active == $index}\">{{action.text}}</md-grid-tile></md-grid-list><md-slider flex=\"flex\" min=\"500\" max=\"2000\" ng-model=\"speed\" id=\"red-slider\"></md-slider><md-switch ng-model=\"isXY\" aria-label=\"Switch 1\">Modo XY {{ isContinue }}</md-switch>");;return buf.join("");
 	}
 
 /***/ },
